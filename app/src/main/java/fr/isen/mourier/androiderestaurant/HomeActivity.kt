@@ -1,7 +1,9 @@
 package fr.isen.mourier.androiderestaurant
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Toast
 import fr.isen.mourier.androiderestaurant.databinding.ActivityHomeBinding
 
@@ -14,6 +16,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val monIntent : Intent = Intent(this, EntreesActivity::class.java)
 
         binding.entreesAction.setOnClickListener{
             //l'utilisateur a cliqué sur entrees
@@ -21,9 +24,11 @@ class HomeActivity : AppCompatActivity() {
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
             toast.show()
+            startActivity(monIntent)
         }
         binding.platsAction.setOnClickListener{
             //l'utilisateur a cliqué sur plats
+
             val text = "Plats"
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
