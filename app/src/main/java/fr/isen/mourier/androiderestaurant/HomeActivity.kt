@@ -3,20 +3,22 @@ package fr.isen.mourier.androiderestaurant
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
 import android.widget.Toast
 import fr.isen.mourier.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private val myTag = "Destroy"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val monIntent : Intent = Intent(this, EntreesActivity::class.java)
+        val monIntent : Intent = Intent(this, MenuActivity::class.java)
+
 
         binding.entreesAction.setOnClickListener{
             //l'utilisateur a cliqué sur entrees
@@ -24,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
             toast.show()
+            monIntent.putExtra("category", "Entrées" )
             startActivity(monIntent)
         }
         binding.platsAction.setOnClickListener{
@@ -33,6 +36,8 @@ class HomeActivity : AppCompatActivity() {
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
             toast.show()
+            monIntent.putExtra("category", "Plats" )
+            startActivity(monIntent)
         }
         binding.dessertsAction.setOnClickListener{
             //l'utilisateur a ckiqué sur desserts
@@ -40,7 +45,14 @@ class HomeActivity : AppCompatActivity() {
             val duration = Toast.LENGTH_SHORT
             val toast = Toast.makeText(applicationContext, text, duration)
             toast.show()
+            monIntent.putExtra("category", "Desserts" )
+            startActivity(monIntent)
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(myTag, "onDestroy")
     }
 }

@@ -3,5 +3,6 @@
     <string name="entrees_action">Entrées</string>
     <string name="plats_action">Plats</string>
     <string name="desserts_action">Desserts</string>
-    <string name="titre_entrees">Les entrées</string>
+    <string name="category_title" />
+    <string name="element_text"/>
 </resources>
