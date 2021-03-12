@@ -4,8 +4,15 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class Item (
-        @SerializedName("id") val id: Int,
+        @SerializedName("id") val id: String,
         @SerializedName("name_fr") val name: String,
         @SerializedName("images") private val images: List<String>,
         @SerializedName("prices") private val prices: List<Price>
-): Serializable
+): Serializable {
+    fun getAffichagePrice() = prices[0].price+"€"
+    fun getFirstPicture() = if(images.isNotEmpty() && images[0].isNotEmpty()) {
+        images[0]
+    } else {
+        null
+    }
+}

@@ -25,30 +25,29 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.i("myTag","je pense que ca marche")
+
+        Log.i("myTag", "je pense que ca marche")
         val categoryName = intent.getStringExtra("category")
         binding.categoryTitle.text = categoryName
         loadFromUrl(categoryName ?: "")
 
-        binding.listeMenu.layoutManager = LinearLayoutManager(this)
-        binding.listeMenu.adapter = CategoryAdapter(listOf("salade", "burger", "coucou", "numero", "deux", "oignons")) { item ->
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("dish", item)
-            startActivity(intent)
-        }
+        //binding.listeMenu.layoutManager = LinearLayoutManager(this)
+        //binding.listeMenu.adapter = CategoryAdapter(listOf("salade", "burger", "coucou", "numero", "deux", "oignons")) { item ->
+        //    val intent = Intent(this, DetailActivity::class.java)
+        //    intent.putExtra("dish", item)
+        //    startActivity(intent)
+        //}
     }
 
-    private fun loadFromUrl (category: String){
+    private fun loadFromUrl(category: String) {
         var url = "http://test.api.catering.bluecodegames.com/menu"
         val jsonIdShop = JSONObject()
         jsonIdShop.put("id_shop", "1")
 
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonIdShop,
                 Response.Listener { response ->
-                    //val gson = GsonBuilder().create().fromJson(response.toString(), String::class.java)
-                    //gson.FirstOrNull
-                    Log.i("myTag","${response.toString()}")
-                    //textView.text = "Response: %s".format(response.toString())
+                    Log.i("myTag", "${response.toString()}")
+                    parsingResult(response.toString(), category)
                 },
                 Response.ErrorListener { error ->
                     // TODO: Handle error
@@ -58,9 +57,22 @@ class MenuActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(jsonObjectRequest)
     }
 
-    private fun parsingResult (result: String, category: String)
-    {
+    private fun parsingResult(result: String, category: String?) {
         val listMenu = GsonBuilder().create().fromJson(result, DataResult::class.java)
-        //val items =
+        val items = listMenu.data.firstOrNull { it.name == category }
+        loadList(items?.items)
+        //Log.i("myTag222", "response: ${items}")
+    }
+
+    private fun loadList(items: List<Item>?) {
+        items?.let {
+            val adapter = CategoryAdapter(it) { item ->
+                val intent = Intent(this, DetailActivity::class.java)
+                intent.putExtra("items", item.name)
+                startActivity(intent)
+                }
+            binding.listeMenu.layoutManager = LinearLayoutManager(this)
+            binding.listeMenu.adapter = adapter
+        }
     }
 }

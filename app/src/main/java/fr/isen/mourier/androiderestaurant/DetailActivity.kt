@@ -13,10 +13,14 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //val nom =  intent.getStringExtra("dish")
-        Toast.makeText(this, intent.getStringExtra("dish") ?:"", Toast.LENGTH_LONG).show()
-        //binding.detailTitle.text = nom
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val name = intent.getStringExtra("items")
+        binding.detailTitle.text = name
+        //val nom =  intent.getStringExtra("dish")
+        //Toast.makeText(this, intent.getStringExtra("name") ?:"", Toast.LENGTH_LONG).show()
+        //binding.detailTitle.text = nom
+
     }
 }
