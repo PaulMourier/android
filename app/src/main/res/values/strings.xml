@@ -4,5 +4,7 @@
     <string name="plats_action">Plats</string>
     <string name="desserts_action">Desserts</string>
     <string name="category_title" />
-    <string name="element_text"/>
+    <string name="element_text" />
+    <string name="textView2">E-Restaurant Mourier</string>
+    <string name="detail_title" />
 </resources>
