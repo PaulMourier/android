@@ -68,7 +68,7 @@ class MenuActivity : AppCompatActivity() {
         items?.let {
             val adapter = CategoryAdapter(it) { item ->
                 val intent = Intent(this, DetailActivity::class.java)
-                intent.putExtra("items", item.name)
+                intent.putExtra("items", item)
                 startActivity(intent)
                 }
             binding.listeMenu.layoutManager = LinearLayoutManager(this)
