@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val monIntent : Intent = Intent(this, MenuActivity::class.java)
+        val bleIntent : Intent = Intent(this, BLEScanActivity::class.java)
 
 
         binding.entreesAction.setOnClickListener{
@@ -47,6 +48,10 @@ class HomeActivity : AppCompatActivity() {
             toast.show()
             monIntent.putExtra("category", "Desserts" )
             startActivity(monIntent)
+        }
+
+        binding.buttonBle.setOnClickListener{
+            startActivity(bleIntent)
         }
 
     }
