@@ -50,13 +50,15 @@ class DetailDeviceActivity : AppCompatActivity() {
     }
 
     private fun connectionStateChange(newState: Int, gatt: BluetoothGatt?) {
-        runOnUiThread {  BLEConnexionState.getBLEConnexionStateFromState(newState)
-            ?.let {//si non nul on fait la suite
-                binding.statusDetailDevice.text = getString(
-                    R.string.ble_device_status,
-                    getString(it.text)
-                )
-            }}
+        runOnUiThread {
+            BLEConnexionState.getBLEConnexionStateFromState(newState)
+                ?.let {//si non nul on fait la suite
+                    binding.statusDetailDevice.text = getString(
+                        R.string.ble_device_status,
+                        getString(it.text)
+                    )
+                }
+        }
     }
 }
 

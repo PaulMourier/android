@@ -40,5 +40,5 @@
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/resto" />
+        app:srcCompat="@drawable/restobas" />
 </androidx.constraintlayout.widget.ConstraintLayout>
