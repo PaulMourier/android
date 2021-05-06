@@ -6,23 +6,24 @@ import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import fr.isen.mourier.androiderestauran.DetailDeviceAdapter
 import fr.isen.mourier.androiderestaurant.databinding.ActivityDetailDeviceBinding
 
 class DetailDeviceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailDeviceBinding
     var bluetoothGatt: BluetoothGatt? = null
+    private  lateinit var ls : MutableList<BLEService>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailDeviceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var deviceName = intent.getStringExtra("deviceName")
         val device = intent.getParcelableExtra<BluetoothDevice>("ble_device")
         binding.titleDetailDevice.text = device?.name ?: "Device Unknown"
-        binding.statusDetailDevice.text =
-            getString(R.string.ble_device_status, getString(R.string.ble_device_status_connecting))
+        binding.statusDetailDevice.text = getString(R.string.ble_device_status, getString(R.string.ble_device_status_connecting))
 
         connectToDevice(device)
     }
@@ -37,7 +38,20 @@ class DetailDeviceActivity : AppCompatActivity() {
 
             override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
                 super.onServicesDiscovered(gatt, status)
+                runOnUiThread {
+                    binding.listService.adapter = DetailDeviceAdapter(
+                        gatt,
+                        gatt?.services?.map {
+                            BLEService(
+                                it.uuid.toString(),
+                                it.characteristics
+                            )
+                        }?.toMutableList() ?: arrayListOf(), this@DetailDeviceActivity
+                    )
+                    binding.listService.layoutManager = LinearLayoutManager(this@DetailDeviceActivity)
+                }
             }
+
 
             override fun onCharacteristicRead(
                 gatt: BluetoothGatt?,
@@ -50,14 +64,14 @@ class DetailDeviceActivity : AppCompatActivity() {
     }
 
     private fun connectionStateChange(newState: Int, gatt: BluetoothGatt?) {
-        runOnUiThread {
-            BLEConnexionState.getBLEConnexionStateFromState(newState)
-                ?.let {//si non nul on fait la suite
-                    binding.statusDetailDevice.text = getString(
-                        R.string.ble_device_status,
-                        getString(it.text)
-                    )
-                }
+        BLEConnexionState.getBLEConnexionStateFromState(newState)?.let {
+            runOnUiThread {
+                binding.statusDetailDevice.text =
+                    getString(R.string.ble_device_status, getString(it.text))
+            } //si non nul on fait ca
+            if (it.state == BLEConnexionState.STATE_CONNECTED.state) {
+                gatt?.discoverServices()
+            }
         }
     }
 }
